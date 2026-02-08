@@ -1,95 +1,29 @@
 {
   "name": "💻 نظام مياه السوفعي",
-  "short_name": "السوفعي",
-  "description": "نظام إدارة مياه السوفعي - المزامنة الذكية 2026",
-  "start_url": "/",
+  "short_name": "💻 السوفعي",
+  "description": "نظام مياه السوفعي - المزامنة الفورية الذكية 2026",
+  "start_url": "/جاهز للانطلاق.y.html",
   "display": "standalone",
-  "background_color": "#000814",
+  "background_color": "#030814",
   "theme_color": "#4cc9f0",
-  "orientation": "portrait",
-  "dir": "rtl",
-  "lang": "ar",
-  "categories": ["productivity", "utilities"],
   "icons": [
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
-      "sizes": "72x72",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
-      "sizes": "96x96",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
-      "sizes": "128x128",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
-      "sizes": "144x144",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
-      "sizes": "152x152",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
-      "sizes": "384x384",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23030814'/><path d='M30,30 L70,30 L70,70 L30,70 Z' fill='%234cc9f0'/><rect x='35' y='35' width='30' height='20' fill='%23030814'/><circle cx='50' cy='60' r='3' fill='%234cc9f0'/></svg>",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "💧 إضافة مشترك جديد",
-      "short_name": "مشترك جديد",
-      "description": "إضافة مشترك جديد للنظام",
-      "url": "/?action=add",
-      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234cc9f0'/><path d='M50,30 L50,70 M30,50 L70,50' stroke='%23030814' stroke-width='8'/></svg>", "sizes": "96x96" }]
-    },
-    {
-      "name": "📊 تقرير الذكاء الاصطناعي",
-      "short_name": "تقرير AI",
-      "description": "تقرير تحليل الذكاء الاصطناعي",
-      "url": "/?action=ai-report",
-      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%238a2be2'/><path d='M30,40 Q50,20 70,40 Q70,60 50,80 Q30,60 30,40 Z' fill='white'/></svg>", "sizes": "96x96" }]
-    },
-    {
-      "name": "⚠️ تنبيهات المديونيات",
-      "short_name": "التنبيهات",
-      "description": "عرض تنبيهات المديونيات العالية",
-      "url": "/?action=alerts",
-      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff4757'/><path d='M50,30 L50,55 M50,60 L50,65' stroke='white' stroke-width='6'/><circle cx='50' cy='70' r='4' fill='white'/></svg>", "sizes": "96x96" }]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><rect width='1200' height='800' fill='%23030814'/><rect x='100' y='100' width='1000' height='600' rx='40' fill='%2300141f'/><circle cx='600' cy='300' r='80' fill='%234cc9f0'/><path d='M500,280 L700,280 L700,480 L500,480 Z' fill='%23030814'/><rect x='530' y='310' width='140' height='100' fill='%2300141f'/><circle cx='600' cy='400' r='10' fill='%234cc9f0'/><text x='600' y='550' text-anchor='middle' fill='white' font-family='Tajawal' font-size='48'>نظام مياه السوفعي</text><text x='600' y='620' text-anchor='middle' fill='%234cc9f0' font-family='Tajawal' font-size='36'>المزامنة الذكية 2026</text></svg>",
-      "sizes": "1200x800",
-      "type": "image/svg+xml",
-      "form_factor": "wide",
-      "label": "شاشة النظام الرئيسية"
-    }
-  ]
+  "categories": ["business", "productivity", "utilities"],
+  "dir": "rtl",
+  "lang": "ar",
+  "orientation": "any",
+  "prefer_related_applications": false,
+  "related_applications": []
 }

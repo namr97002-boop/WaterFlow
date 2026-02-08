@@ -28,6 +28,525 @@
     <style>
         /* ============= شاشة التحميل والتصميم الجديد ============= */
         :root {
+        	/* ============= التأثيرات السينمائية الجديدة ============= */
+body {
+    background: linear-gradient(-45deg, #03045e, #023e8a, #0077b6, #1a237e) !important;
+    background-size: 400% 400% !important;
+    animation: gradientBG 15s ease infinite !important;
+    min-height: 100vh !important;
+    color: white !important;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(76, 201, 240, 0.3) !important;
+    border-radius: 20px !important;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 128, 0.3);
+}
+
+.btn-cinema {
+    background: linear-gradient(135deg, #4cc9f0, #00b4d8) !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 10px 25px !important;
+    border: none !important;
+    font-weight: bold !important;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 128, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-cinema:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 128, 0.4) !important;
+    background: linear-gradient(135deg, #00b4d8, #4361ee) !important;
+}
+
+.btn-cinema::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.btn-cinema:hover::before {
+    left: 100%;
+}
+
+.cinematic-pulse {
+    animation: cinematicPulse 2s infinite;
+    box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.7);
+}
+
+@keyframes cinematicPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.7);
+        transform: scale(1);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(76, 201, 240, 0);
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+        transform: scale(1);
+    }
+}
+
+.glowing-border {
+    position: relative;
+    border-radius: 15px;
+}
+
+.glowing-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        #ff0000, #ff7300, #fffb00, #48ff00,
+        #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000
+    );
+    background-size: 400%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: glowingBorder 20s linear infinite;
+    filter: blur(5px);
+    opacity: 0.7;
+}
+
+@keyframes glowingBorder {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+/* أزرار التحكم السريعة بتأثيرات خاصة */
+.btn-floating {
+    background: linear-gradient(135deg, var(--ai-purple), #9370db) !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 12px 20px !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    font-weight: bold !important;
+    box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-floating:hover {
+    transform: translateY(-8px) scale(1.05) !important;
+    box-shadow: 0 15px 35px rgba(138, 43, 226, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-floating::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+}
+
+.btn-floating:hover::after {
+    animation: shine 1.5s ease;
+}
+
+@keyframes shine {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* تأثيرات النصوص السينمائية */
+.cinematic-text {
+    background: linear-gradient(90deg, 
+        #4cc9f0, #00b4d8, #0077b6, #03045e
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes textShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* تأثيرات الأيقونات المتحركة */
+.icon-3d {
+    display: inline-block;
+    animation: floatIcon 3s ease-in-out infinite;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* خلفية الجسيمات المتحركة */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(76, 201, 240, 0.3);
+    border-radius: 50%;
+    animation: floatParticle 15s infinite linear;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.5;
+    }
+    90% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* تأثيرات الظلال المتحركة */
+.dynamic-shadow {
+    position: relative;
+}
+
+.dynamic-shadow::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 5%;
+    width: 90%;
+    height: 20px;
+    background: radial-gradient(ellipse at center, 
+        rgba(0, 0, 0, 0.4) 0%, 
+        rgba(0, 0, 0, 0) 80%
+    );
+    border-radius: 50%;
+    animation: shadowPulse 2s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+@keyframes shadowPulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* أزرار خاصة بالواجهة الرئيسية */
+.main-nav-btn {
+    background: linear-gradient(135deg, 
+        rgba(3, 4, 94, 0.9),
+        rgba(0, 119, 182, 0.9)
+    ) !important;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(76, 201, 240, 0.5) !important;
+    color: white !important;
+    padding: 14px 28px !important;
+    border-radius: 15px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    transition: all 0.4s ease !important;
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 128, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-nav-btn:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 128, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    background: linear-gradient(135deg, 
+        rgba(0, 119, 182, 0.9),
+        rgba(76, 201, 240, 0.9)
+    ) !important;
+    border-color: rgba(76, 201, 240, 0.8) !important;
+}
+
+.main-nav-btn .btn-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    animation: badgeBounce 2s infinite;
+}
+
+@keyframes badgeBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* تأثيرات الشاشة الرئيسية */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px;
+}
+
+.dashboard-card {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05)
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 201, 240, 0.2);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4cc9f0, #00b4d8, #0077b6);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 128, 0.4),
+        0 0 0 1px rgba(76, 201, 240, 0.3);
+    border-color: rgba(76, 201, 240, 0.5);
+}
+
+.dashboard-card h3 {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-card h3 i {
+    color: #4cc9f0;
+    font-size: 24px;
+}
+
+/* تأثيرات التنقل بين الصفحات */
+.page-transition {
+    animation: pageFadeIn 0.8s ease;
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تأثيرات النوافذ المنبثقة */
+.modal-cinematic {
+    animation: modalAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: linear-gradient(135deg, 
+        rgba(3, 4, 94, 0.95),
+        rgba(0, 119, 182, 0.95)
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 201, 240, 0.4);
+    border-radius: 25px;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 128, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+@keyframes modalAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* تأثيرات شريط التمرير المخصص */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(3, 4, 94, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #4cc9f0, #00b4d8);
+    border-radius: 10px;
+    border: 2px solid rgba(3, 4, 94, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #00b4d8, #0077b6);
+}
+
+/* تأثيرات النصوص العائمة */
+.floating-text {
+    animation: floatUp 3s ease-in-out infinite;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(76, 201, 240, 0.5);
+}
+
+@keyframes floatUp {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* أزرار الإجراءات السريعة */
+.quick-action-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4cc9f0, #4361ee);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 128, 0.4),
+        0 0 0 4px rgba(76, 201, 240, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 
+            0 10px 20px rgba(0, 0, 128, 0.4),
+            0 0 0 4px rgba(76, 201, 240, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 128, 0.6),
+            0 0 0 8px rgba(76, 201, 240, 0.4);
+    }
+}
+
+.quick-action-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, #4361ee, #4cc9f0);
+}
+
+/* تأثيرات البيانات والإحصائيات */
+.stat-card {
+    background: linear-gradient(135deg, 
+        rgba(76, 201, 240, 0.1),
+        rgba(0, 180, 216, 0.1)
+    );
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        transparent 30%,
+        rgba(76, 201, 240, 0.1) 50%,
+        transparent 70%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.stat-card:hover::before {
+    transform: translateX(100%);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 128, 0.3);
+    border-color: rgba(76, 201, 240, 0.6);
+}
+
+/* نهاية الإضافات السينمائية */
             --primary: #4cc9f0;
             --accent: #00b4d8;
             --deep: #03045e;
@@ -6975,11 +7494,29 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     transform: scale(1.2);
 }
 </style>
-<!-- التاريخ الهجري أعلى يمين الشاشة -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروعي - التاريخ الهجري وزر التثبيت</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+<!-- التاريخ الهجري أعلى الصفحة -->
 <div id="hijriDate" style="
 position:fixed;
 top:12px;
-right:12px;
+left:50%;
+transform:translateX(-50%);
 background:rgba(0,0,0,0.5);
 color:#fff;
 padding:8px 14px;
@@ -6992,11 +7529,73 @@ z-index:9999;
 text-align:center;
 ">
 </div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مشروعي - التاريخ الهجري وزر التثبيت</title>
+<style>
+    body {
+        font-family: 'Tajawal', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+    }
+
+    /* الزر + التقويم */
+    #hijriDate {
+        position: fixed;
+        top: 8px;
+        right: 8px; /* أعلى يمين */
+        background: rgba(0,0,0,0.35); /* شفاف ورقيق */
+        color: #fff;
+        padding: 3px 6px; /* أصغر */
+        border-radius: 6px;
+        font-size: 11px; /* أصغر */
+        font-weight: bold;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        z-index: 9999;
+        text-align: center;
+        pointer-events: none; /* يسمح بالضغط على الأزرار تحته */
+        white-space: nowrap;
+    }
+
+    #installBtn {
+        position: fixed;
+        top: 38px; /* تحت التقويم */
+        right: 8px;
+        padding: 10px 20px;
+        background: #ff8500;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 9999;
+        display: none; /* يظهر فقط عند توفر التثبيت */
+    }
+
+</style>
+</head>
+<body>
+
+<!-- التاريخ الهجري -->
+<div id="hijriDate"></div>
+
+<!-- زر تثبيت التطبيق -->
+<button id="installBtn">تثبيت التطبيق</button>
+
+<!-- محتوى مشروعك -->
+<div id="app" style="padding:80px 20px;">
+    <h1>مرحبا بك في مشروعك!</h1>
+    <!-- هنا تضع محتوى Vue أو HTML -->
+</div>
 
 <script>
+// تحديث التاريخ الهجري كل دقيقة
 function updateHijri(){
     const now = new Date();
-
     const hijri = new Intl.DateTimeFormat(
         'ar-SA-u-ca-islamic',
         {
@@ -7009,9 +7608,43 @@ function updateHijri(){
 
     document.getElementById('hijriDate').innerText = hijri;
 }
-
 updateHijri();
-setInterval(updateHijri,60000); // تحديث كل دقيقة
-</script>
+setInterval(updateHijri,60000);
+
+// زر تثبيت التطبيق
+let deferredPrompt = null;
+const installBtn = document.getElementById('installBtn');
+
+// إخفاء الزر إذا التطبيق مثبت مسبقًا
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    installBtn.style.display = 'none';
+}
+
+// حدث قبل تثبيت PWA
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+});
+
+// عند الضغط على الزر
+installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    // بعد التثبيت أو رفض المستخدم، إخفاء الزر نهائيًا
+    installBtn.style.display = 'none';
+    deferredPrompt = null;
+    console.log(outcome === 'accepted' ? 'تم تثبيت التطبيق ✅' : 'رفض المستخدم التثبيت ❌');
+});
+
+// عند تثبيت التطبيق أثناء الاستخدام
+window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+});
+</script><script src="pwa.js"></script>
+
 </body>
 </html>

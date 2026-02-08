@@ -1,170 +1,147 @@
-// sw.js - Service Worker متقدم للعمل بدون نت
-const CACHE_NAME = 'water-system-v2.0';
-const APP_VERSION = '2.0.2026';
-
-// روابط للتخزين في الكاش
-const STATIC_CACHE_URLS = [
-  './',
-  './index.html',
-  './manifest.json'
-];
-
-// روابط CDN للتخزين
-const EXTERNAL_CACHE_URLS = [
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap',
-  'https://unpkg.com/vue@3/dist/vue.global.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
-  'https://cdn.jsdelivr.net/npm/chart.js'
+// Service Worker لنظام مياه السوفعي الذكي
+const CACHE_NAME = 'soufai-water-cache-v6';
+const urlsToCache = [
+  './',                     // الصفحة الرئيسية
+  './جاهز للانطلاق.y.html', // ملفك الرئيسي
+  './manifest.json'         // ملف تعريف التطبيق
 ];
 
 // تثبيت Service Worker
 self.addEventListener('install', event => {
-  console.log('📦 تثبيت Service Worker - إصدار:', APP_VERSION);
+  console.log('🔧 جاري تثبيت Service Worker...');
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('🗂️ فتح الكاش:', CACHE_NAME);
-        // تخزين الملفات الأساسية
-        return cache.addAll(STATIC_CACHE_URLS)
-          .then(() => {
-            console.log('✅ تم تخزين الملفات الأساسية');
-            // تخزين ملفات CDN
-            return Promise.all(
-              EXTERNAL_CACHE_URLS.map(url => 
-                fetch(url)
-                  .then(response => {
-                    if (response.ok) {
-                      return cache.put(url, response);
-                    }
-                  })
-                  .catch(err => console.warn('⚠️ فشل تخزين:', url, err))
-              )
-            );
-          })
-          .then(() => {
-            console.log('🎯 تم التثبيت بنجاح');
-            self.skipWaiting();
-          });
+        console.log('📦 تخزين الملفات الأساسية في الكاش');
+        return cache.addAll(urlsToCache);
       })
-      .catch(err => {
-        console.error('❌ خطأ في التثبيت:', err);
+      .then(() => {
+        console.log('✅ تم التثبيت بنجاح');
+        return self.skipWaiting();
+      })
+      .catch(error => {
+        console.error('❌ خطأ في التثبيت:', error);
       })
   );
 });
 
 // تفعيل Service Worker
 self.addEventListener('activate', event => {
-  console.log('🚀 تفعيل Service Worker');
+  console.log('🚀 تفعيل Service Worker...');
   
   event.waitUntil(
+    // تنظيف الكاش القديم
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('🗑️ حذف الكاش القديم:', cacheName);
+            console.log('🧹 حذف الكاش القديم:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
     .then(() => {
-      console.log('✅ تم التفعيل بنجاح');
+      console.log('✅ Service Worker مفعل وجاهز');
       return self.clients.claim();
     })
   );
 });
 
-// معالجة الطلبات
+// التعامل مع طلبات الشبكة (FETCH)
 self.addEventListener('fetch', event => {
-  const requestUrl = new URL(event.request.url);
-  
-  // استثناء Google Sheets من الكاش (لضمان بيانات حديثة)
-  if (requestUrl.hostname.includes('google.com') || 
-      requestUrl.hostname.includes('script.googleusercontent.com')) {
-    // تمرير مباشر للشبكة
-    return;
-  }
-  
-  // استثناء الطلبات POST/PUT
-  if (event.request.method !== 'GET') {
-    return;
-  }
-  
+  // تجاهل طلبات POST وغير GET
+  if (event.request.method !== 'GET') return;
+
+  // استراتيجية: الكاش أولاً ثم الشبكة
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
-        // أولوية للكاش
+        // إذا الملف موجود في الكاش
         if (cachedResponse) {
-          console.log('💾 استرجاع من الكاش:', requestUrl.pathname);
-          
-          // تحديث الكاش في الخلفية
-          fetch(event.request)
-            .then(response => {
-              if (response.ok) {
-                caches.open(CACHE_NAME)
-                  .then(cache => cache.put(event.request, response));
-              }
-            })
-            .catch(() => {}); // تجاهل الأخطاء في التحديث الخلفي
-          
+          console.log('📂 استرجاع من الكاش:', event.request.url);
           return cachedResponse;
         }
-        
+
         // إذا لم يكن في الكاش، جلب من الشبكة
-        console.log('🌐 جلب من الشبكة:', requestUrl.pathname);
+        console.log('🌐 جلب من الشبكة:', event.request.url);
+        
         return fetch(event.request)
-          .then(response => {
-            // التحقق من أن الاستجابة صالحة للتخزين
-            if (response.ok && response.status === 200) {
-              const responseClone = response.clone();
-              caches.open(CACHE_NAME)
-                .then(cache => cache.put(event.request, responseClone));
+          .then(networkResponse => {
+            // التحقق من صحة الاستجابة
+            if (!networkResponse || networkResponse.status !== 200) {
+              return networkResponse;
             }
-            return response;
+
+            // تخزين الموارد الجديدة في الكاش
+            const responseToCache = networkResponse.clone();
+            
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseToCache);
+                console.log('💾 تم تخزين في الكاش:', event.request.url);
+              });
+
+            return networkResponse;
           })
           .catch(error => {
-            console.error('❌ فشل الاتصال:', error);
-            // رد افتراضي للصفحة الرئيسية إذا فشل كل شيء
-            if (requestUrl.pathname === '/' || requestUrl.pathname === '/index.html') {
+            console.error('❌ فشل في جلب المورد:', error);
+            
+            // إذا فشل الاتصال، حاول تقديم بديل
+            if (event.request.mode === 'navigate') {
+              return caches.match('./جاهز للانطلاق.y.html');
+            }
+            
+            // للصور والموارد الأخرى، يمكنك إرجاع بديل
+            if (event.request.destination === 'image') {
               return new Response(
-                '<!DOCTYPE html><html dir="rtl"><head><title>نظام مياه السوفعي</title><meta charset="UTF-8"><style>body{font-family:Tajawal;background:#000814;color:white;text-align:center;padding:50px;}</style></head><body><h1>💧 نظام مياه السوفعي</h1><p>التطبيق يعمل بدون اتصال بالإنترنت</p><p>جاري تحميل البيانات المخزنة محلياً...</p><script>setTimeout(()=>location.reload(),3000);</script></body></html>',
-                {
-                  headers: { 'Content-Type': 'text/html; charset=utf-8' }
-                }
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#030814"/><text x="50" y="65" font-size="40" text-anchor="middle" fill="#4cc9f0">💧</text></svg>',
+                { headers: { 'Content-Type': 'image/svg+xml' } }
               );
             }
-            throw error;
+            
+            return new Response('فشل الاتصال بالشبكة', {
+              status: 408,
+              headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+            });
           });
       })
   );
 });
 
-// استقبال رسائل من التطبيق
-self.addEventListener('message', event => {
-  if (event.data === 'CLEAR_CACHE') {
-    caches.delete(CACHE_NAME)
-      .then(() => {
-        console.log('🧹 تم مسح الكاش بناءً على طلب التطبيق');
-        event.ports[0].postMessage('تم مسح الكاش');
-      });
-  }
-  
-  if (event.data === 'GET_CACHE_STATUS') {
-    caches.open(CACHE_NAME)
-      .then(cache => cache.keys())
-      .then(keys => {
-        event.ports[0].postMessage({
-          cacheName: CACHE_NAME,
-          itemCount: keys.length,
-          version: APP_VERSION
-        });
-      });
+// ============ إضافات متقدمة ============
+
+// مزامنة البيانات في الخلفية (للتحديثات)
+self.addEventListener('sync', event => {
+  if (event.tag === 'sync-data') {
+    event.waitUntil(syncData());
   }
 });
 
-// التحديث التلقائي كل أسبوع
+async function syncData() {
+  console.log('🔄 جاري مزامنة البيانات في الخلفية...');
+  
+  try {
+    // هنا يمكنك إضافة منطق مزامنة البيانات مع السيرفر
+    const cache = await caches.open(CACHE_NAME);
+    const cachedData = await cache.keys();
+    
+    console.log(`📊 ${cachedData.length} ملف مخزن في الكاش`);
+    
+    // إرسال إشعار بنجاح المزامنة
+    self.registration.showNotification('نظام السوفعي', {
+      body: 'تم تحديث البيانات في الخلفية',
+      icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#030814"/><text x="50" y="65" font-size="40" text-anchor="middle" fill="#4cc9f0">💧</text></svg>',
+      tag: 'data-sync'
+    });
+    
+  } catch (error) {
+    console.error('❌ فشل المزامنة:', error);
+  }
+}
+
+// تحديث دوري للبيانات
 self.addEventListener('periodicsync', event => {
   if (event.tag === 'update-cache') {
     event.waitUntil(updateCache());
@@ -172,56 +149,173 @@ self.addEventListener('periodicsync', event => {
 });
 
 async function updateCache() {
-  console.log('🔄 جاري التحديث التلقائي للكاش');
-  const cache = await caches.open(CACHE_NAME);
+  console.log('📡 تحديث الكاش في الخلفية...');
   
-  // تحديث الملفات الأساسية
-  for (const url of STATIC_CACHE_URLS) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        await cache.put(url, response);
+  try {
+    // تحديث الملفات الأساسية
+    const cache = await caches.open(CACHE_NAME);
+    
+    for (const url of urlsToCache) {
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          await cache.put(url, response);
+          console.log(`✅ تم تحديث: ${url}`);
+        }
+      } catch (error) {
+        console.warn(`⚠️ لم يتم تحديث: ${url}`, error);
       }
-    } catch (error) {
-      console.warn('⚠️ فشل تحديث:', url);
+    }
+    
+  } catch (error) {
+    console.error('❌ فشل تحديث الكاش:', error);
+  }
+}
+
+// التعامل مع التنبيهات
+self.addEventListener('push', event => {
+  if (!event.data) return;
+  
+  const data = event.data.json();
+  
+  const options = {
+    body: data.body || 'تحديث جديد في نظام مياه السوفعي',
+    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#030814"/><text x="50" y="65" font-size="40" text-anchor="middle" fill="#4cc9f0">💧</text></svg>',
+    badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#4cc9f0"/></svg>',
+    vibrate: [200, 100, 200],
+    data: {
+      url: data.url || './',
+      timestamp: Date.now()
+    },
+    actions: [
+      {
+        action: 'open-app',
+        title: 'فتح التطبيق'
+      },
+      {
+        action: 'dismiss',
+        title: 'تجاهل'
+      }
+    ],
+    requireInteraction: true
+  };
+  
+  event.waitUntil(
+    self.registration.showNotification(
+      data.title || '💧 نظام مياه السوفعي',
+      options
+    )
+  );
+});
+
+// النقر على التنبيهات
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  
+  if (event.action === 'open-app') {
+    event.waitUntil(
+      clients.openWindow(event.notification.data.url)
+    );
+  }
+});
+
+// رسالة من الصفحة الرئيسية
+self.addEventListener('message', event => {
+  console.log('📨 رسالة من الصفحة:', event.data);
+  
+  if (event.data.type === 'CACHE_NEW_DATA') {
+    // تخزين بيانات جديدة في الكاش
+    cacheNewData(event.data.payload);
+  }
+});
+
+async function cacheNewData(data) {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    
+    // تخزين بيانات JSON
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const response = new Response(blob);
+    
+    await cache.put('/api/data.json', response);
+    console.log('💾 تم تخزين البيانات الجديدة');
+    
+  } catch (error) {
+    console.error('❌ فشل تخزين البيانات:', error);
+  }
+}
+
+// ============ وظائف مساعدة ============
+
+// التحقق من اتصال الإنترنت
+async function isOnline() {
+  try {
+    const response = await fetch('./', { method: 'HEAD', cache: 'no-store' });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
+// الحصول على حجم الكاش
+async function getCacheSize() {
+  const cache = await caches.open(CACHE_NAME);
+  const keys = await cache.keys();
+  
+  let totalSize = 0;
+  
+  for (const request of keys) {
+    const response = await cache.match(request);
+    if (response) {
+      const blob = await response.blob();
+      totalSize += blob.size;
+    }
+  }
+  
+  return totalSize;
+}
+
+// تنظيف الكاش القديم
+async function cleanupOldCache() {
+  const cache = await caches.open(CACHE_NAME);
+  const keys = await cache.keys();
+  const weekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+  
+  for (const request of keys) {
+    const response = await cache.match(request);
+    if (response) {
+      const dateHeader = response.headers.get('date');
+      if (dateHeader) {
+        const cachedDate = new Date(dateHeader).getTime();
+        if (cachedDate < weekAgo) {
+          await cache.delete(request);
+          console.log('🗑️ حذف ملف قديم:', request.url);
+        }
+      }
     }
   }
 }
 
-// معالجة دفع الإشعارات (مستقبلاً)
-self.addEventListener('push', event => {
-  const options = {
-    body: 'نظام مياه السوفعي - إشعار جديد',
-    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23030814"/><path d="M30,30 L70,30 L70,70 L30,70 Z" fill="%234cc9f0"/><rect x="35" y="35" width="30" height="20" fill="%23030814"/><circle cx="50" cy="60" r="3" fill="%234cc9f0"/></svg>',
-    badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ff4757"/></svg>',
-    vibrate: [200, 100, 200],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 'water-system-notification'
-    },
-    actions: [
-      {
-        action: 'open',
-        title: 'فتح التطبيق'
-      },
-      {
-        action: 'close',
-        title: 'إغلاق'
-      }
-    ]
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification('💧 نظام مياه السوفعي', options)
-  );
-});
+// تشغيل التنظيف كل يوم
+setInterval(() => {
+  cleanupOldCache();
+}, 24 * 60 * 60 * 1000);
 
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
+// إرسال إحصائيات الكاش للصفحة الرئيسية
+setInterval(async () => {
+  const cacheSize = await getCacheSize();
+  const online = await isOnline();
   
-  if (event.action === 'open') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
-  }
-});
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'CACHE_STATS',
+        payload: {
+          size: cacheSize,
+          online: online,
+          timestamp: Date.now()
+        }
+      });
+    });
+  });
+}, 30000); // كل 30 ثانية
